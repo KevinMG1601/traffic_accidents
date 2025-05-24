@@ -4,13 +4,12 @@ import sqlalchemy
 
 load_dotenv()
 
-def create_engine_connection(db_key="DB_RAW"):
+def create_engine_connection(db_key):
     """
     Crea una conexión SQLAlchemy a la base de datos especificada utilizando variables de entorno.
 
     Parámetros:
         db_key (str): Clave de la variable de entorno que contiene el nombre de la base de datos.
-                      Por defecto es 'DB_RAW'.
 
     Retorna:
         sqlalchemy.engine.Engine: Objeto de conexión SQLAlchemy a la base de datos.

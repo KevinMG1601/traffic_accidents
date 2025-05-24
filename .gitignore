@@ -181,3 +181,5 @@ airflow/webserver_config.py
 
 .db
 .cfg
+
+venv/

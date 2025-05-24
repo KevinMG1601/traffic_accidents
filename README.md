@@ -1,6 +1,6 @@
 # Project ETL - Traffic Accidents 🚗
 
-## Overview
+## **Overview**
 The objective of this project is to perform an in-depth exploratory analysis of the traffic accident dataset. The analysis seeks to identify patterns, time trends, geographic distribution, and relevant factors associated with the incidents, in order to generate knowledge that can support decision-making and prevention strategies.
 
 ## Dataset [Traffic Accidents Kaggle](https://www.kaggle.com/datasets/oktayrdeki/traffic-accidents)
@@ -30,25 +30,32 @@ The objective of this project is to perform an in-depth exploratory analysis of 
 * **crash_day_of_week:** The day of the week the accident occurred.
 * **crash_month:** The month the accident occurred.
 
-## Pipeline 
-![Pipeline_ETL](/assets/pipeline_etl.png "This is a pipeline")
+## **API Crash Viewer NHTSA**
+![LOGO API](https://crashviewer.nhtsa.dot.gov/CrashAPI/Images/NHTSA_Logo_w_tag.png)
+
+Para la API se descargo la data en formato `csv` directo desde la pagia porque al consumir la API era muy demorada al dar la informacion de todos los States, asi que se tomo es decision de utilizarla asi, este es el link de la pagina de la API: https://crashviewer.nhtsa.dot.gov/CrashAPI/
+
+
+## **PIPELINE**
+![Pipeline_ETL](/assets/airflow.png "This is a pipeline")
 
 
 ## Tools and Libraries
 El proyecto utiliza diversas herramientas de software para construir el flujo ETL, procesar los datos y modelarlos para análisis posterior:
 
-* Python 3.11.9
-* Apache Airflow – Orquestación de tareas ETL.
-* Pandas – Manipulación y transformación de datos.
-* SQLAlchemy – Conexión y ejecución de consultas SQL.
-* MariaDB – Almacenamiento de datos crudos, limpios y modelo dimensional.
-* dotenv – Gestión de variables de entorno.
-* Kaggle API – Descarga de datasets desde la plataforma.
+* [Python 3.11.9](https://www.python.org/downloads/release/python-3119/)
+* [Apache Airflow](https://airflow.apache.org/docs/apache-airflow/stable/index.html)
+* [Jupyter Notebook](https://docs.jupyter.org/en/latest/)
+* [Kafka](https://kafka.apache.org/documentation/)
+* [Docker](https://docs.docker.com/)
+* [MySQL](https://dev.mysql.com/downloads/installer/)
+* [Redis](https://redis.io/docs/latest/)
+
 
 ## Installation and Setup
 1. Clona el repositorio:
     ```bash
-    git clone https://github.com/KevinMG1601/Project_ETL.git
+    git clone https://github.com/KevinMG1601/traffic_accidents.git
     cd Project_ETL
     ```
 
@@ -65,36 +72,85 @@ El proyecto utiliza diversas herramientas de software para construir el flujo ET
 ## Configuración
 
 ### 1. Configura el archivo `.env`
+Crear el `.env` basado con el `.env.example` con tus variables.
 
-* DB_USER = ""
-* DB_PASSWORD = ""
-* DB_PORT = ""
-* DB_HOST = ""
-* DB_RAW = "raw_accidents"
-* DB_CLEAN = "clean_accidents"
-* DB_MODEL = "model_accidents"
+`IMPORTANTE TENER CREADO LAS 3 BASES DE DATOS!!!!`
 
-### 2. Airflow 
+### 2. Docker  
 
 Ejecutar el primer code:
-    ```bash
-    export AIRFLOW_HOME="$(pwd)/airflow”
+```
+docker compose up -d
+```
+![docker1](/assets/docker1.png)
+
+Comprobamos los servicios con:
+```
+docker ps
+```
+![docker2](/assets/docker2.png)
+
+### 3. Consumer
+
+Ejecutamos el consumer con:
+```
+python src/kafka/consumer.py
+```
+El consumer va a quedar en espera a recibir los mensajes del producer.
+
+### 4. Dashboard Real Time
+
+Ejecutamos el dashboard que va a recibir los datos del consumer:
+```
+streamlit run dashboard/app.py
+```
+En el navegador vamos al enlace localhost con el puerto que nos da.
+![dashboard](/assets/dash.png)
+
+### 5. Airflow 
+
+Ejecutar el primer code:
+```
+export AIRFLOW_HOME="$(pwd)/airflow”
+```
 
 Despues ejecute:
-    ```bash
-    airflow standalone 
+```
+airflow standalone 
+```
+vaya a **`localhost:8080`** e inicia sesion con el password y user que te da airflow.
 
-ya por ultimo vaya a localhost:8080 e inicia sesion con el password y user que te da airflow.
+Por ultimo Ejecuta el DAG llamado `accidents_etl`.
+
+### **VIDEO**
+Este es el vide de demostracion: https://drive.google.com/drive/folders/110HVvHGUUr82vZHhTtQWflbI6nfqE3IL?usp=sharing
+
 
 ## Modelo dimensional
 
-![modelo_dimensional](/assets/modelo_dimensional.jpg)
+![modelo_dimensional](/assets/modelo_dimensional.png)
 
-## Authors
-#### Created by:
+## **CONCLUSIONES**
+Este proyecto logró integrar una tubería completa de tecnología de datos que automatiza la extracción, transformación, validación, almacenamiento y visualización de tiempo real con accidentes de tráfico. 
 
-**Kevin Andres Muñoz G. - [Github](https://github.com/KevinMG1601) / [Linkedin](https://www.linkedin.com/in/kevin-mu%C3%B1oz-231b80303/)**
+Utilizando tecnologías como Apache Air Flow to Orchestra, Kafka sobre la transmisión de datos de transmisión, Redis como la visualización intermedia de almacenamiento y flujo se convirtió en una arquitectura estable y escalable consolidada. 
+
+Desde un punto de vista funcional, se desarrollaron una serie de transformaciones para homogeneizar datos de dos fuentes diferentes (una base almacenada en MySQL y API externa), lo que permite que sea efectivo. Con grandes esperanzas, se incorporó la capa de validación de calidad de datos para garantizar que los conjuntos utilizados cumplan ciertos estándares. 
+
+Finalmente, el uso de un panel de información dinámico e interactivo ofrece visualizaciones actualizadas cada pocos segundos, lo que le permite observar la ocurrencia de accidentes por día. Día, hora, mes, año, estado climático o de iluminación y severidad. Proporciona una plataforma potencial para decisiones de tiempo real y accidentes críticos de la ciudad. Este flujo de datos automatizado no solo muestra habilidades técnicas en el procesamiento de datos y el desarrollo de la tubería, sino que también lo considera una base para soluciones analíticas relacionadas con la seguridad vial, el urbanismo inteligente y la prevención de riesgos.
 
 
-**Simon Garcia Rubiano. - [Github](https://github.com/simondev06) / [Linkedin]()**
-
+## **AUTHOR**
+<table style="border-collapse: collapse; border: none;">
+  <tr>
+    <td align="center" width="150" style="border: none;">
+      <a href="https://github.com/KevinMG1601">
+        <img src="https://avatars.githubusercontent.com/u/143461336?v=4" width="100px" alt="Kevin Muñoz"/><br />
+        <span style="color: black; font-weight: bold;">Kevin Muñoz</span>
+      </a>
+    </td>
+    <td style="border: none; vertical-align: top;">
+      Created by <b>Kevin Muñoz</b>. I would like to know your opinion about this project. You can write me by <a href="mailto:kevin.andres2636@gmail.com">email</a> or connect with me on <a href="https://www.linkedin.com/in/kevin-mu%C3%B1oz-231b80303/">LinkedIn</a>.
+    </td>
+  </tr>
+</table>
