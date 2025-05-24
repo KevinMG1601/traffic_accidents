@@ -31,7 +31,7 @@ The objective of this project is to perform an in-depth exploratory analysis of 
 * **crash_month:** The month the accident occurred.
 
 ## **API Crash Viewer NHTSA**
-![LOGO API](https://www.nhtsa.gov/sites/nhtsa.gov/files/2021-09/NHTSA_SPANISH_Logo_w_tag.png)
+![LOGO API](https://www.nhtsa.gov/sites/nhtsa.gov/files/nhtsa-logo-no-text-1200-1200.jpg)
 
 Para la API se descargo la data en formato `csv` directo desde la pagia porque al consumir la API era muy demorada al dar la informacion de todos los States, asi que se tomo es decision de utilizarla asi, este es el link de la pagina de la API: https://crashviewer.nhtsa.dot.gov/CrashAPI/
 
